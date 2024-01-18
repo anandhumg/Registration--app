@@ -1,10 +1,10 @@
 const express=require('express');
 const mongoose = require('mongoose')
 const bodyParser =require('body-parser');
-const fs =require('fs/promises');
-const app =express();
+const fs = require('fs/promises');
+const app = express();
 const PORT = 8000;
-const cors =require('cors');
+const cors =  require('cors');
 const userModel = require('./Models/users');
 const personModel = require('./Models/persons');
 

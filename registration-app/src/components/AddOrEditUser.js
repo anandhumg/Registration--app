@@ -11,6 +11,7 @@ function AddOrEditUser({ viewMode }) {
   const [phone, setPhone] = useState('');
   const [resMess, setresMess] = useState('');
   const [title, setTitle] = useState('');
+  const [amount,setAmount] = useState('')
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -41,6 +42,7 @@ function AddOrEditUser({ viewMode }) {
       username: username,
       email: email,
       phone: phone,
+      amount:amount
     };
 
     if (!id) {
@@ -90,6 +92,10 @@ function AddOrEditUser({ viewMode }) {
             <Form.Group controlId="formPhone">
               <Form.Label>Phone</Form.Label>
               <Form.Control type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required readOnly={viewMode}/>
+            </Form.Group>
+           < Form.Group controlId="formAmount">
+              <Form.Label>Invested Amount</Form.Label>
+              <Form.Control type="text" value={amount} onChange={(e) => setAmount(e.target.value)} required readOnly={viewMode}/>
             </Form.Group>
       
 

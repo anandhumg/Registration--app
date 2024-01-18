@@ -4,6 +4,7 @@ import SignUp from './components/signUp';
 import Home from './components/home';
 import AddOrEditUser from "./components/AddOrEditUser";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import AddToInvest from "./components/AddToInvest";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/addoredit" element={<AddOrEditUser />}></Route>
           <Route path="/addoredit/:id" element={<AddOrEditUser />}></Route>
           <Route path="/addoredit/:id/view" element={<AddOrEditUser viewMode />}></Route>
+          <Route path="/addtoinvest" element={<AddToInvest/>}/>
         </Routes>
       </Router>
     </div>

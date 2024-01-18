@@ -134,6 +134,8 @@ function Home() {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Invested Amount</th>
+                <th>Balance Amount</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -144,6 +146,8 @@ function Home() {
                     <td>{data.username}</td>
                     <td>{data.email}</td>
                     <td>{data.phone}</td>
+                    <td>{data.amount}</td>
+                    <td>{data.balAmount}</td>
                     <td>
                       <Button variant='info' onClick={() => { handleView(data._id) }} >view</Button>
                       <Button variant='warning' className="ml-3" onClick={() => { handleEdit(data._id) }}>Edit</Button>

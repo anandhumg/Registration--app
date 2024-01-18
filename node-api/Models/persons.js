@@ -4,7 +4,9 @@ const personSchema =new mongoose.Schema(
     {
         username : String,
         email    : String,
-        phone    : String
+        phone    : String,
+        amount: String,
+        balAmount : String
     }
 );
 
