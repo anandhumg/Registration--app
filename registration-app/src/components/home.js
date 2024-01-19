@@ -106,6 +106,7 @@ function Home() {
           <Nav className="mr-auto">
             <Nav.Link href="">Home</Nav.Link>
             <Nav.Link href="/signup">sign- up</Nav.Link>
+            <Nav.Link href='/addtoinvest'>Invest</Nav.Link>
           </Nav>
           <Form inline>
             <FormControl

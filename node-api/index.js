@@ -7,6 +7,7 @@ const PORT = 8000;
 const cors =  require('cors');
 const userModel = require('./Models/users');
 const personModel = require('./Models/persons');
+const stockModel = require('./Models/stock');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -149,11 +150,11 @@ app.get('/person-search', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-
-
-
-
-
+app.post('/invested-data',(req,res)=>{
+  stockModel.create(req.body)
+  .then(stocks =>res.json(stocks))
+  .catch(err=>res.json(err))
+})
 
 
 
