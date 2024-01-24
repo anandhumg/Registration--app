@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const stockSchema =new mongoose.Schema(
     {
-        stockName :String,
-        price : String,
-        date : Date,
-        percentage : String,
-        personIds : Array
+        stockName : String,
+        stockPrice : String,
+        stockPercentage : Number,
+        purchaseDate: Date,
+        selectedIds : Array
     }
 );
 

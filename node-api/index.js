@@ -51,7 +51,7 @@ app.post('/login',(req,res)=>{
     })
 });
 app.post('/new-person',(req,res)=>{
-    const{email} = req.body;
+    const {email} = req.body;
     personModel.findOne({email:email})
     .then((person)=>{
         if(person){
@@ -143,7 +143,7 @@ app.delete('/delete-person/:id', (req, res) => {
 app.get('/person-search', async (req, res) => {
     try {
       const searchQuery = req.query.search || '';
-      const regex = new RegExp(searchQuery, 'i'); // Case-insensitive search
+      const regex = new RegExp(searchQuery, 'i'); 
       const users = await personModel.find({ $or: [{ username: regex }, { email: regex }, { phone: regex }] });
       res.json(users);
     } catch (error) {
@@ -154,7 +154,26 @@ app.post('/invested-data',(req,res)=>{
   stockModel.create(req.body)
   .then(stocks =>res.json(stocks))
   .catch(err=>res.json(err))
-})
+});
+
+// PATCH endpoint to update balAmount for selected user IDs
+app.patch('/update-bal-amount', async (req, res) => {
+  try {
+    const { selectedUserIds, stockPercentage } = req.body;
+
+    const percentageMultiplier = 1 - parseFloat(stockPercentage) / 100;
+    const result = await personModel.updateMany(
+      { _id: { $in: selectedUserIds }, balAmount: { $exists: true } },
+      { $mul: { balAmount: percentageMultiplier } }
+    );
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error updating balAmount:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 

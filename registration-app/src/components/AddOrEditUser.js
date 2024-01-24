@@ -11,7 +11,8 @@ function AddOrEditUser({ viewMode }) {
   const [phone, setPhone] = useState('');
   const [resMess, setresMess] = useState('');
   const [title, setTitle] = useState('');
-  const [amount,setAmount] = useState('')
+  const [amount,setAmount] = useState('');
+  const [balAmount,setBalAmount] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -25,6 +26,8 @@ function AddOrEditUser({ viewMode }) {
         setName(data.username);
         setEmail(data.email);
         setPhone(data.phone);
+        setAmount(data.amount);
+        setBalAmount(data.balAmount);
         setTitle(viewMode ? 'View User' : 'Edit User');
       });
     } else {
@@ -42,7 +45,8 @@ function AddOrEditUser({ viewMode }) {
       username: username,
       email: email,
       phone: phone,
-      amount:amount
+      amount:amount,
+      balAmount:balAmount
     };
 
     if (!id) {
@@ -96,6 +100,10 @@ function AddOrEditUser({ viewMode }) {
            < Form.Group controlId="formAmount">
               <Form.Label>Invested Amount</Form.Label>
               <Form.Control type="text" value={amount} onChange={(e) => setAmount(e.target.value)} required readOnly={viewMode}/>
+            </Form.Group>
+            < Form.Group controlId="formAmount">
+              <Form.Label>Balance Amount</Form.Label>
+              <Form.Control type="text" value={balAmount} onChange={(e) => setBalAmount(e.target.value)} required readOnly={viewMode}/>
             </Form.Group>
       
 

@@ -1,89 +1,133 @@
 import React, { useEffect, useState } from 'react';
-import { TextField,Button } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { DataGrid } from '@mui/x-data-grid';
-import { Container } from 'react-bootstrap';
+import { TextField, Button } from '@mui/material';
+import { Container, Table } from 'react-bootstrap';
 import axios from 'axios';
-import './style.css'
+import './style.css';
+
 function AddToInvest() {
   const [userDatas, setUserDatas] = useState([]);
-  const [investData,setInvestedData] = useState(['']);
-  const [stockName,setStockName] = useState(['']);
-  const [stockPrice,setStockPrice] = useState(['']);
-  const [stockPercentage,setStockPercentage] = useState(['']);
-  const [purchaseDate,setPurchaceDate] =useState([''])
-  const [selectedUser ,setSelectedUser] = useState([])
-
+  const [investData, setInvestedData] = useState({
+    stockName: '',
+    stockPrice: '',
+    stockPercentage: '',
+    selectedUserIds: [],
+    purchaseDate:''
+  });
 
   useEffect(() => {
-    axios.get('http://localhost:8000/persons')
-      .then((response) => {
-        setUserDatas(response.data);
-      });
+    axios.get('http://localhost:8000/persons').then((response) => {
+      setUserDatas(response.data);
+    });
   }, []);
 
-  const handleSave = ()=>{
-   setInvestedData((prevInvestedData) => ({
-    ...prevInvestedData,
-    stockName,
-    stockPrice,
-    stockPercentage,
-    selectedUser,
-  }));
-  
-    // axios.post('http://localhost:8000/invested-data',investData)
-    // .then((res)=>{
-    //   console.log(res)
-    // })
-    // .catch((err)=>{
-    //   console.log(err)
-    // })
-  }
-  useEffect(() => {
-    console.log(investData);
-    
-  }, [investData]); 
+  const handleCheckboxChange = (userId) => {
+    setInvestedData((prevInvestedData) => {
+      const isSelected = prevInvestedData.selectedUserIds.includes(userId);
 
-  const handleSelectionChange = (selectionModel) => {
-    
-    const selectedRows = selectionModel.map((selectedIndex) => rows[selectedIndex]);
-    const selectedIds = selectedRows.map((row) => row.id);
-    setSelectedUser(selectedIds);
+      if (isSelected) {
+        return {
+          ...prevInvestedData,
+          selectedUserIds: prevInvestedData.selectedUserIds.filter((id) => id !== userId),
+        };
+      } else {
+        return {
+          ...prevInvestedData,
+          selectedUserIds: [...prevInvestedData.selectedUserIds, userId],
+        };
+      }
+    });
   };
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 130},
-    { field: 'name', headerName: 'Name', width: 130 }, 
-    { field: 'email', headerName: 'Email', width: 130 },
-    { field: 'amount', headerName: 'Amount', width: 130 }, 
-  ];
-
-  const rows = userDatas.map((data) => ({
-    id: data._id,
-    name: data.username,
-    email: data.email,
-    amount: data.amount,
-  }));
+  const handleSave = () => {
+    axios.post('http://localhost:8000/invested-data', {
+      stockName: investData.stockName,
+      stockPrice: investData.stockPrice,
+      stockPercentage: investData.stockPercentage,
+      purchaseDate: investData.purchaseDate,
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
+    axios.patch('http://localhost:8000/update-bal-amount', investData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
 
   return (
     <div className='investContainer'>
       <Container>
         <form>
-        <TextField id="outlined-basic" label="Stock Name" variant="outlined" onChange={(e)=>{setStockName(e.target.value)}} />
-        <TextField id="outlined-basic" label="Price" variant="outlined" onChange={(e)=>{setStockPrice(e.target.value)}}/>
-        <TextField id="outlined-basic" label="Percentage" variant="outlined" onChange={(e)=>{setStockPercentage(e.target.value)}}/>
-        {/* <DatePicker label="Basic date picker" onChange={(e)=>{setPurchaceDate(e.target.value)}}/> */}
+        <TextField
+  id='outlined-basic'
+  label='Stock Name'
+  variant='outlined'
+  onChange={(e) => setInvestedData({ ...investData, stockName: e.target.value })}
+/>
 
-        <div style={{ height: 400, width: '100%' }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={5} 
-            checkboxSelection
-            onChange={handleSelectionChange}
-          />
-        </div>
+<TextField
+  id='outlined-basic'
+  label='Price'
+  variant='outlined'
+  onChange={(e) => setInvestedData({ ...investData, stockPrice: e.target.value })}
+/>
 
-        <Button variant="outlined" onClick={handleSave}>SAVE</Button>
+<TextField
+  id='outlined-basic'
+  label='Percentage'
+  variant='outlined'
+  onChange={(e) => setInvestedData({ ...investData, stockPercentage: e.target.value })}
+/>
+
+<input
+  label='Date'
+  type="date"
+  onChange={(e) => setInvestedData({ ...investData, purchaseDate: e.target.value })}
+/>
+
+          <div>
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>User Name</th>
+                  <th>Email Id</th>
+                  <th>Invested</th>
+                  <th>Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userDatas.map((data) => {
+                  if(data.balAmount>0){
+                    return (
+                      <tr key={data._id}>
+                        <td>{data.username}</td>
+                        <td>{data.email}</td>
+                        <td>{data.amount}</td>
+                        <td>
+                          <input
+                            type='checkbox'
+                            checked={investData.selectedUserIds.includes(data._id)}
+                            onChange={() => handleCheckboxChange(data._id)}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  }
+                  return null
+                })}
+              </tbody>
+            </Table>
+          </div>
+          <Button variant='outlined' onClick={handleSave}>
+            SAVE
+          </Button>
         </form>
       </Container>
     </div>
