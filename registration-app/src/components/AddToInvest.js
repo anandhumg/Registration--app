@@ -11,7 +11,7 @@ function AddToInvest() {
     stockPrice: '',
     stockPercentage: '',
     selectedUserIds: [],
-    purchaseDate:''
+    purchaseDate: ''
   });
 
   useEffect(() => {
@@ -50,7 +50,7 @@ function AddToInvest() {
       .catch((err) => {
         console.log(err);
       });
-  
+
     axios.patch('http://localhost:8000/update-bal-amount', investData)
       .then((res) => {
         console.log(res);
@@ -59,38 +59,38 @@ function AddToInvest() {
         console.log(err);
       });
   };
-  
+
 
   return (
     <div className='investContainer'>
       <Container>
         <form>
-        <TextField
-  id='outlined-basic'
-  label='Stock Name'
-  variant='outlined'
-  onChange={(e) => setInvestedData({ ...investData, stockName: e.target.value })}
-/>
+          <TextField
+            id='outlined-basic'
+            label='Stock Name'
+            variant='outlined'
+            onChange={(e) => setInvestedData({ ...investData, stockName: e.target.value })}
+          />
 
-<TextField
-  id='outlined-basic'
-  label='Price'
-  variant='outlined'
-  onChange={(e) => setInvestedData({ ...investData, stockPrice: e.target.value })}
-/>
+          <TextField
+            id='outlined-basic'
+            label='Price'
+            variant='outlined'
+            onChange={(e) => setInvestedData({ ...investData, stockPrice: e.target.value })}
+          />
 
-<TextField
-  id='outlined-basic'
-  label='Percentage'
-  variant='outlined'
-  onChange={(e) => setInvestedData({ ...investData, stockPercentage: e.target.value })}
-/>
+          <TextField
+            id='outlined-basic'
+            label='Percentage'
+            variant='outlined'
+            onChange={(e) => setInvestedData({ ...investData, stockPercentage: e.target.value })}
+          />
 
-<input
-  label='Date'
-  type="date"
-  onChange={(e) => setInvestedData({ ...investData, purchaseDate: e.target.value })}
-/>
+          <input
+            label='Date'
+            type="date"
+            onChange={(e) => setInvestedData({ ...investData, purchaseDate: e.target.value })}
+          />
 
           <div>
             <Table striped bordered hover>
@@ -104,7 +104,7 @@ function AddToInvest() {
               </thead>
               <tbody>
                 {userDatas.map((data) => {
-                  if(data.balAmount>0){
+                  if (data.balAmount > 0) {
                     return (
                       <tr key={data._id}>
                         <td>{data.username}</td>

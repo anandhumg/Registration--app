@@ -173,7 +173,14 @@ app.patch('/update-bal-amount', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+app.get('/invest-list',async(req,res)=>{
+  try{
+     // const {}
+  }
+  catch(error){
+    
+  }
+})
 
 
 
